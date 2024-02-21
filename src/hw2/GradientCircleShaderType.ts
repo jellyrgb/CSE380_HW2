@@ -75,22 +75,11 @@ export default class GradientCircleShaderType extends RectShaderType {
 	
 		// HOMEWORK 2 - TODO: Pass color to shader
 		const u_Color = gl.getUniformLocation(program, "u_Color");
-		gl.uniform3fv(u_Color, options.color); // Pass color uniform to shader
+		gl.uniform3f(u_Color, options.color.r, options.color.g, options.color.b); // Pass color uniform to shader
 	
 		// Draw the quad
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
-
-	private colors: Array<Array<number>> = [
-        [1.0, 0.0, 0.0], // 빨강
-        [0.0, 1.0, 0.0], // 초록
-        [0.0, 0.0, 1.0], // 파랑
-        [1.0, 1.0, 0.0], // 노랑
-        [1.0, 0.0, 1.0], // 자주
-        [0.0, 1.0, 1.0]  // 청록
-    ];
-
-	private chosenColor: Array<number> = null;
 	
 	// HOMEWORK 2 - TODO
 	/**
@@ -98,15 +87,12 @@ export default class GradientCircleShaderType extends RectShaderType {
 	 * You should modify this class to allow you to change the color of the GradientCircles
 	 */
 	getOptions(gc: Rect): Record<string, any> {
-        // 새로운 색상 선택
-        let randomIndex = Math.floor(Math.random() * this.colors.length);
-        let chosenColor = this.colors[randomIndex];
 
         let options: Record<string, any> = {
             position: gc.position,
             size: gc.size,
             rotation: gc.rotation,
-            color: chosenColor // 선택된 무작위 색상 적용
+            color: gc.color // 선택된 무작위 색상 적용
         }
 
         return options;

@@ -83,6 +83,7 @@ export default class Homework1_Scene extends Scene {
 		this.load.image("space", "hw2_assets/sprites/space.png");
 
 		/* ##### YOUR CODE GOES BELOW THIS LINE ##### */
+		this.load.spritesheet("fleet", "hw2_assets/spritesheets/pizza_spaceship.json");
 	}
 
 	/*
@@ -477,18 +478,22 @@ export default class Homework1_Scene extends Scene {
 					// 1) 실드까고 무적 만들기
 					this.playerShield--;
 					this.playerinvincible = true;
+					asteroid.visible = false;
+					this.numAsteroids--;
 		
 					// 2) 데미지 알리기
-					this.emitter.fireEvent(Homework2Event.PLAYER_DAMAGE, { shieldLevel: this.playerShield });
+					this.emitter.fireEvent(Homework2Event.PLAYER_DAMAGE, { shield: this.playerShield });
 		
 					// 3) GUI 업데이트
 					this.shieldsLabel.text = `Shield: ${this.playerShield}`;
+					this.asteroidsLabel.text = `Asteroid: ${this.numAsteroids}`;
 		
 					// 4) 부서진 수 업데이트
 					this.numAsteroidsDestroyed++;
 				}
 			}
 		}
+		this.playerinvincible = false;
 	}
 
 	// HOMEWORK 2 - TODO
@@ -512,6 +517,22 @@ export default class Homework1_Scene extends Scene {
 				break;
 			}
 		}
+
+		let sixColors: Color[] = [
+			Color.RED,
+			Color.BLUE,
+			Color.GREEN,
+			Color.MAGENTA,
+			Color.YELLOW,
+			Color.CYAN
+		];
+		
+		//new Color(140, 30, 20)
+
+		let randomIndex = Math.floor(Math.random() * sixColors.length);
+        let chosenColor = sixColors[randomIndex];
+
+		asteroid.color = chosenColor;
 
 		if(asteroid !== null){
 			// Bring this asteroid to life
