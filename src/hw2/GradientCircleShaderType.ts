@@ -32,63 +32,83 @@ export default class GradientCircleShaderType extends RectShaderType {
 		// Get our program and buffer object
 		const program = this.resourceManager.getShaderProgram(this.programKey);
 		const buffer = this.resourceManager.getBuffer(this.bufferObjectKey);
-
+	
 		// Let WebGL know we're using our shader program
 		gl.useProgram(program);
-
+	
 		// Get our vertex data
 		const vertexData = this.getVertices(options.size.x, options.size.y);
 		const FSIZE = vertexData.BYTES_PER_ELEMENT;
-
+	
 		// Bind the buffer
 		gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 		gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
-
+	
 		/* ##### ATTRIBUTES ##### */
 		// No texture, the only thing we care about is vertex position
 		const a_Position = gl.getAttribLocation(program, "a_Position");
 		gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 2 * FSIZE, 0 * FSIZE);
 		gl.enableVertexAttribArray(a_Position);
-
+	
 		/* ##### UNIFORMS ##### */
-
+	
 		// Get transformation matrix
 		// We have a square for our rendering space, so get the maximum dimension of our quad
 		let maxDimension = Math.max(options.size.x, options.size.y);
-
+	
 		// The size of the rendering space will be a square with this maximum dimension
 		let size = new Vec2(maxDimension, maxDimension).scale(2/options.worldSize.x, 2/options.worldSize.y);
-
+	
 		// Center our translations around (0, 0)
 		const translateX = (options.position.x - options.origin.x - options.worldSize.x/2)/maxDimension;
 		const translateY = -(options.position.y - options.origin.y - options.worldSize.y/2)/maxDimension;
-
+	
 		// Create our transformation matrix
 		this.translation.translate(new Float32Array([translateX, translateY]));
 		this.scale.scale(size);
 		this.rotation.rotate(options.rotation);
 		let transformation = Mat4x4.MULT(this.translation, this.scale, this.rotation);
-
+	
 		// Pass the translation matrix to our shader
 		const u_Transform = gl.getUniformLocation(program, "u_Transform");
 		gl.uniformMatrix4fv(u_Transform, false, transformation.toArray());
-
+	
+		// HOMEWORK 2 - TODO: Pass color to shader
+		const u_Color = gl.getUniformLocation(program, "u_Color");
+		gl.uniform3fv(u_Color, options.color); // Pass color uniform to shader
+	
 		// Draw the quad
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
 
+	private colors: Array<Array<number>> = [
+        [1.0, 0.0, 0.0], // 빨강
+        [0.0, 1.0, 0.0], // 초록
+        [0.0, 0.0, 1.0], // 파랑
+        [1.0, 1.0, 0.0], // 노랑
+        [1.0, 0.0, 1.0], // 자주
+        [0.0, 1.0, 1.0]  // 청록
+    ];
+
+	private chosenColor: Array<number> = null;
+	
 	// HOMEWORK 2 - TODO
 	/**
 	 * This method decides what options get passed to the above render() method.
 	 * You should modify this class to allow you to change the color of the GradientCircles
 	 */
 	getOptions(gc: Rect): Record<string, any> {
-		let options: Record<string, any> = {
-			position: gc.position,
-			size: gc.size,
-			rotation: gc.rotation
-		}
+        // 새로운 색상 선택
+        let randomIndex = Math.floor(Math.random() * this.colors.length);
+        let chosenColor = this.colors[randomIndex];
 
-		return options;
-	}
+        let options: Record<string, any> = {
+            position: gc.position,
+            size: gc.size,
+            rotation: gc.rotation,
+            color: chosenColor // 선택된 무작위 색상 적용
+        }
+
+        return options;
+    }
 }

@@ -567,10 +567,28 @@ export default class Homework1_Scene extends Scene {
 	 * @param viewportCenter The center of the viewport
 	 * @param paddedViewportSize The size of the viewport with padding
 	 */
-	handleScreenWrap(node: GameNode, viewportCenter: Vec2, paddedViewportSize: Vec2): void {
-		// Your code goes here:
-
-	}
+	 handleScreenWrap(node: GameNode, viewportCenter: Vec2, paddedViewportSize: Vec2): void {
+		// 객체의 위치를 가져옵니다.
+		let position = node.position;
+	
+		// 객체의 위치가 화면의 가장자리를 벗어나는지 확인합니다.
+		// X축에 대해 검사합니다.
+		if (position.x > viewportCenter.x + paddedViewportSize.x / 2) {
+			position.x = viewportCenter.x - paddedViewportSize.x / 2;
+		} else if (position.x < viewportCenter.x - paddedViewportSize.x / 2) {
+			position.x = viewportCenter.x + paddedViewportSize.x / 2;
+		}
+	
+		// Y축에 대해 검사합니다.
+		if (position.y > viewportCenter.y + paddedViewportSize.y / 2) {
+			position.y = viewportCenter.y - paddedViewportSize.y / 2;
+		} else if (position.y < viewportCenter.y - paddedViewportSize.y / 2) {
+			position.y = viewportCenter.y + paddedViewportSize.y / 2;
+		}
+	
+		// 수정된 위치를 적용합니다.
+		node.position.set(position.x, position.y);
+	}	
 
 	// HOMEWORK 2 - TODO
 	/**
