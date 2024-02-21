@@ -474,7 +474,18 @@ export default class Homework1_Scene extends Scene {
 				// If the asteroid is spawned in and it overlaps the player
 				if(asteroid.visible && Homework1_Scene.checkAABBtoCircleCollision(<AABB>this.player.collisionShape, <Circle>asteroid.collisionShape)){
 					// Put your code here:
-
+					// 1) 실드까고 무적 만들기
+					this.playerShield--;
+					this.playerinvincible = true;
+		
+					// 2) 데미지 알리기
+					this.emitter.fireEvent(Homework2Event.PLAYER_DAMAGE, { shieldLevel: this.playerShield });
+		
+					// 3) GUI 업데이트
+					this.shieldsLabel.text = `Shield: ${this.playerShield}`;
+		
+					// 4) 부서진 수 업데이트
+					this.numAsteroidsDestroyed++;
 				}
 			}
 		}
@@ -616,8 +627,17 @@ export default class Homework1_Scene extends Scene {
 	 * @returns True if the two shapes overlap, false if they do not
 	 */
 	static checkAABBtoCircleCollision(aabb: AABB, circle: Circle): boolean {
-		// Your code goes here:
-		return false;
+		// Find the closest point on the AABB to the center of the circle
+		let closestPoint = new Vec2(
+			Math.max(aabb.center.x - aabb.halfSize.x, Math.min(circle.center.x, aabb.center.x + aabb.halfSize.x)),
+			Math.max(aabb.center.y - aabb.halfSize.y, Math.min(circle.center.y, aabb.center.y + aabb.halfSize.y))
+		);
+	
+		// Calculate the distance between the closest point and the circle center
+		let distanceSquared = closestPoint.distanceSqTo(circle.center);
+	
+		// If the distance is less than the radius squared, they overlap
+		return distanceSquared < circle.radius * circle.radius;
 	}
 
 }
