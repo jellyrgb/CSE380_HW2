@@ -74,8 +74,9 @@ export default class GradientCircleShaderType extends RectShaderType {
 		gl.uniformMatrix4fv(u_Transform, false, transformation.toArray());
 	
 		// HOMEWORK 2 - TODO: Pass color to shader
+		// Modified Code
 		const u_Color = gl.getUniformLocation(program, "u_Color");
-		gl.uniform3f(u_Color, options.color.r, options.color.g, options.color.b); // Pass color uniform to shader
+		gl.uniform3f(u_Color, options.color.r, options.color.g, options.color.b);
 	
 		// Draw the quad
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -86,15 +87,17 @@ export default class GradientCircleShaderType extends RectShaderType {
 	 * This method decides what options get passed to the above render() method.
 	 * You should modify this class to allow you to change the color of the GradientCircles
 	 */
+	
 	getOptions(gc: Rect): Record<string, any> {
 
+		// Modified Code
         let options: Record<string, any> = {
             position: gc.position,
             size: gc.size,
             rotation: gc.rotation,
-            color: gc.color // 선택된 무작위 색상 적용
+            color: gc.color
         }
-
+		
         return options;
     }
 }

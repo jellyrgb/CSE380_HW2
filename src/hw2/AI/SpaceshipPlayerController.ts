@@ -49,6 +49,8 @@ export default class SpaceshipPlayerController implements AI {
 
 		this.receiver = new Receiver();
 		this.emitter = new Emitter();
+
+		// Modified Code
 		this.receiver.subscribe(Homework2Event.PLAYER_DAMAGE);
 	}
 

@@ -83,6 +83,7 @@ export default class Homework1_Scene extends Scene {
 		this.load.image("space", "hw2_assets/sprites/space.png");
 
 		/* ##### YOUR CODE GOES BELOW THIS LINE ##### */
+		// Modified Code
 		this.load.spritesheet("fleet", "hw2_assets/spritesheets/pizza_spaceship.json");
 	}
 
@@ -475,20 +476,18 @@ export default class Homework1_Scene extends Scene {
 				// If the asteroid is spawned in and it overlaps the player
 				if(asteroid.visible && Homework1_Scene.checkAABBtoCircleCollision(<AABB>this.player.collisionShape, <Circle>asteroid.collisionShape)){
 					// Put your code here:
-					// 1) 실드까고 무적 만들기
+					// Modified Code
 					this.playerShield--;
 					this.playerinvincible = true;
+
 					asteroid.visible = false;
 					this.numAsteroids--;
-		
-					// 2) 데미지 알리기
+
 					this.emitter.fireEvent(Homework2Event.PLAYER_DAMAGE, { shield: this.playerShield });
 		
-					// 3) GUI 업데이트
 					this.shieldsLabel.text = `Shield: ${this.playerShield}`;
 					this.asteroidsLabel.text = `Asteroid: ${this.numAsteroids}`;
 		
-					// 4) 부서진 수 업데이트
 					this.numAsteroidsDestroyed++;
 				}
 			}
@@ -518,6 +517,7 @@ export default class Homework1_Scene extends Scene {
 			}
 		}
 
+		// Modified Code
 		let sixColors: Color[] = [
 			Color.RED,
 			Color.BLUE,
@@ -526,8 +526,6 @@ export default class Homework1_Scene extends Scene {
 			Color.YELLOW,
 			Color.CYAN
 		];
-		
-		//new Color(140, 30, 20)
 
 		let randomIndex = Math.floor(Math.random() * sixColors.length);
         let chosenColor = sixColors[randomIndex];
@@ -600,25 +598,21 @@ export default class Homework1_Scene extends Scene {
 	 * @param paddedViewportSize The size of the viewport with padding
 	 */
 	 handleScreenWrap(node: GameNode, viewportCenter: Vec2, paddedViewportSize: Vec2): void {
-		// 객체의 위치를 가져옵니다.
+		// Modified Code
 		let position = node.position;
-	
-		// 객체의 위치가 화면의 가장자리를 벗어나는지 확인합니다.
-		// X축에 대해 검사합니다.
+
 		if (position.x > viewportCenter.x + paddedViewportSize.x / 2) {
 			position.x = viewportCenter.x - paddedViewportSize.x / 2;
 		} else if (position.x < viewportCenter.x - paddedViewportSize.x / 2) {
 			position.x = viewportCenter.x + paddedViewportSize.x / 2;
 		}
 	
-		// Y축에 대해 검사합니다.
 		if (position.y > viewportCenter.y + paddedViewportSize.y / 2) {
 			position.y = viewportCenter.y - paddedViewportSize.y / 2;
 		} else if (position.y < viewportCenter.y - paddedViewportSize.y / 2) {
 			position.y = viewportCenter.y + paddedViewportSize.y / 2;
 		}
 	
-		// 수정된 위치를 적용합니다.
 		node.position.set(position.x, position.y);
 	}	
 
@@ -648,16 +642,14 @@ export default class Homework1_Scene extends Scene {
 	 * @returns True if the two shapes overlap, false if they do not
 	 */
 	static checkAABBtoCircleCollision(aabb: AABB, circle: Circle): boolean {
-		// Find the closest point on the AABB to the center of the circle
+		// Modified Code
 		let closestPoint = new Vec2(
 			Math.max(aabb.center.x - aabb.halfSize.x, Math.min(circle.center.x, aabb.center.x + aabb.halfSize.x)),
 			Math.max(aabb.center.y - aabb.halfSize.y, Math.min(circle.center.y, aabb.center.y + aabb.halfSize.y))
 		);
 	
-		// Calculate the distance between the closest point and the circle center
 		let distanceSquared = closestPoint.distanceSqTo(circle.center);
 	
-		// If the distance is less than the radius squared, they overlap
 		return distanceSquared < circle.radius * circle.radius;
 	}
 

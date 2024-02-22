@@ -1,6 +1,6 @@
 precision mediump float;
 
-uniform vec3 u_Color; // uniform 변수 추가
+uniform vec3 u_Color; // Modified Code
 
 varying vec4 v_Position;
 
@@ -13,5 +13,5 @@ void main(){
         alpha = 4.0 * dist_sq;
     }
 
-    gl_FragColor = vec4(u_Color, alpha); // 색상을 uniform 변수로 설정
+    gl_FragColor = vec4(u_Color, alpha); // Modified Code
 }

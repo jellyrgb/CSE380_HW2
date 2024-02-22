@@ -21,6 +21,7 @@ export enum Homework2Shaders {
  * Make sure these match the animation names for your own animated sprite.
  */
 export enum Homework2Animations {
+	// Modified Code
 	SHIP_IDLE = "IDLE",
 	SHIP_BOOST = "BOOST",
 	SHIP_DIE = "TAKING_DAMAGE"
@@ -31,5 +32,6 @@ export enum Homework2Animations {
  * Make sure this is the key you give to your loaded spritesheet.
  */
 export enum Homework2Names {
+	// Modified Code
 	FLEET_SHIP = "fleet"
 }
